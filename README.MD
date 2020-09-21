@@ -1,4 +1,4 @@
-# ffmpeg-webworker
+# ffmpeg-webworker-madvise
 
 A WebWorker implementation that eases the use of ffmpeg library in the browser.
 
@@ -10,7 +10,7 @@ This builds upon an existing work geniusly done by the folks at
 
 ## Demo
 
-[See it here](https://limistah.github.io/ffmpeg-webworker)
+[See it here (original version)](https://limistah.github.io/ffmpeg-webworker)
 
 ## Installation
 
@@ -189,30 +189,7 @@ webworkerClient.on('ready', () => {
 });
 ```
 
-## Release Notes
-
-1.0.0
-
-- Supports all ffmpeg codecs
-
-Initial Release:
-
-- Setup for the library
-- Only supports lib H246
-
-## Contributions
-
-Github issues can be used to log bug reports, suggestions and improvements
-
-You can fork, then send a pull request.
-
-Thank you...
-
-## License
-
-MIT
-
 ## Credits
 
 This library has been made possible with the awesome work by folks at
-[Ffmpeg.js](https://github.com/muaz-khan/Ffmpeg.js/)
+[Ffmpeg.js](https://github.com/muaz-khan/Ffmpeg.js/) and [ffmpeg-webworker](https://github.com/limistah/ffmpeg-webworker)

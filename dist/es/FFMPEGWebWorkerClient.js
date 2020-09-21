@@ -18,9 +18,9 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-import { EventEmitter } from 'events';
-import WorkerFile from 'webworker-file';
-import workerFile from './FFMPEGWebWorker';
+import { EventEmitter } from "events";
+import WorkerFile from "webworker-file";
+import workerFile from "./FFMPEGWebWorker";
 
 var FFMPEGWebworkerClient =
 /*#__PURE__*/
@@ -70,8 +70,8 @@ function (_EventEmitter) {
     _defineProperty(_assertThisInitialized(_this), "runCommand", function (command) {
       var totalMemory = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 33554432;
 
-      if (typeof command !== 'string' || !command.length) {
-        throw new Error('command should be string and not empty');
+      if (typeof command !== "string" || !command.length) {
+        throw new Error("command should be string and not empty");
       }
 
       if (_this.inputFile && _this.inputFile.type) {
@@ -82,20 +82,20 @@ function (_EventEmitter) {
           var inputCommand = "-i ".concat(filename, " ").concat(command);
 
           _this.worker.postMessage({
-            arguments: inputCommand.split(' '),
+            arguments: inputCommand.split(" "),
             files: [{
               data: new Uint8Array(arrayBuffer),
               name: filename
             }],
             totalMemory: totalMemory,
-            type: 'command'
+            type: "command"
           });
         });
       } else {
         _this.worker.postMessage({
-          arguments: command.split(' '),
+          arguments: command.split(" "),
           totalMemory: totalMemory,
-          type: 'command'
+          type: "command"
         });
       }
     });
@@ -106,7 +106,7 @@ function (_EventEmitter) {
 
     _defineProperty(_assertThisInitialized(_this), "isVideo", function (file) {
       var fileType = file.type;
-      return file instanceof Blob && (fileType.includes('video') || fileType.includes('audio'));
+      return file instanceof Blob && (fileType.includes("video") || fileType.includes("audio"));
     });
 
     _defineProperty(_assertThisInitialized(_this), "terminate", function () {
@@ -130,18 +130,18 @@ function (_EventEmitter) {
         var message = event.data;
 
         if (event && event.type) {
-          if (message.type == 'ready') {
-            _this2.emit('onReady', 'ffmpeg-asm.js file has been loaded.');
+          if (message.type == "ready") {
+            _this2.emit("onReady", "ffmpeg-asm.js file has been loaded.");
 
             _this2.workerIsReady = true;
-          } else if (message.type == 'stdout') {
-            _this2.emit('onStdout', message.data);
-          } else if (message.type == 'start') {
-            _this2.emit('onFileReceived', 'File Received');
+          } else if (message.type == "stdout") {
+            _this2.emit("onStdout", message.data);
+          } else if (message.type == "start") {
+            _this2.emit("onFileReceived", "File Received");
 
-            log('file received ffmpeg command.');
-          } else if (message.type == 'done') {
-            _this2.emit('onDone', message.data);
+            log("file received ffmpeg command.");
+          } else if (message.type == "done") {
+            _this2.emit("onDone", message.data);
           }
         }
       };
@@ -162,7 +162,7 @@ function (_EventEmitter) {
     key: "convertInputFileToArrayBuffer",
     value: function convertInputFileToArrayBuffer() {
       if (!this.inputFileExists()) {
-        throw new Error('Input File has not been set');
+        throw new Error("Input File has not been set");
       }
 
       return this.readFileAsBufferArray(this.inputFile);
@@ -183,7 +183,7 @@ function (_EventEmitter) {
     key: "inputFile",
     set: function set(inputFile) {
       if (!this.isVideo(inputFile)) {
-        throw new Error('Input file is expected to be an audio or a video');
+        throw new Error("Input file is expected to be an audio or a video");
       }
 
       this._inputFile = inputFile;
