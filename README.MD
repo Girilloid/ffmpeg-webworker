@@ -2,6 +2,8 @@
 
 A WebWorker implementation that eases the use of ffmpeg library in the browser.
 
+This fork contains fixed version of ffmep-all-codecs file (_madvise function issue). Terminate function added
+
 This builds upon an existing work geniusly done by the folks at
 [Ffmpeg.js](https://github.com/muaz-khan/Ffmpeg.js/) and
 [videoconverter.js](https://github.com/bgrins/videoconverter.js)
@@ -25,15 +27,18 @@ yarn add ffmpeg-webworker
 ## Usage
 
 ```js
-import workerClient from "ffmpeg-webworker";
-import React from "react";
+import { FFMPEGWebworkerClient } from 'ffmpeg-webworker';
+import React from 'react';
+
+const workerClient = new FFMPEGWebworkerClient();
 
 class FFMPEG extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      stdOutputText: "",
-      ffmpegReady: false
+      stdOutputText: '',
+      ffmpegReady: false,
     };
 
     this.updateStdOutputText = this.updateStdOutputText.bind(this);
@@ -42,41 +47,45 @@ class FFMPEG extends React.Component {
   }
 
   componentWillMount() {
-    workerClient.on("onReady", () => this.setState({ ffmpegReady: true }));
-    workerClient.on("onStdout", msg => this.updateStdOutputText(msg));
-    workerClient.on("onFileReceived", msg => this.updateStdOutputText(msg));
-    workerClient.on("onDone", data => {
-      this.updateStdOutputText("Command Completed, check the console");
+    workerClient.on('onReady', () => this.setState({ ffmpegReady: true }));
+    workerClient.on('onStdout', (msg) => this.updateStdOutputText(msg));
+    workerClient.on('onFileReceived', (msg) => this.updateStdOutputText(msg));
+    workerClient.on('onDone', (data) => {
+      this.updateStdOutputText('Command Completed, check the console');
       console.log(data);
     });
   }
 
   updateStdOutputText(text) {
     this.setState({
-      stdOutputText: `${this.state.stdOutputText} \n\n ${text}`
+      stdOutputText: `${this.state.stdOutputText} \n\n ${text}`,
     });
   }
 
   handleInputChange(e) {
-    this.setState({ stdOutputText: "" });
+    this.setState({ stdOutputText: '' });
 
     const file = e.currentTarget.files[0];
     // Set the file for processing
     workerClient.inputFile = file;
     // Run a valid ffmpeg command
-    workerClient.runCommand("-ss 00:00:05 -c copy -t 12 sliced-output.mp4");
+    workerClient.runCommand('-ss 00:00:05 -c copy -t 12 sliced-output.mp4');
   }
 
   Input({ onChange }) {
     return (
-      <input type="file" accept="audio/*,video/*" onChange={e => onChange(e)} />
+      <input
+        type="file"
+        accept="audio/*,video/*"
+        onChange={(e) => onChange(e)}
+      />
     );
   }
 
   StdOutput({ text, ffmpegReady }) {
     return (
       <pre>
-        {ffmpegReady ? "FFMPEG is ready" : "Loading FFMPEG"}
+        {ffmpegReady ? 'FFMPEG is ready' : 'Loading FFMPEG'}
         {text}
       </pre>
     );
@@ -84,9 +93,9 @@ class FFMPEG extends React.Component {
 
   handleListCodecs(e) {
     e.preventDefault();
-    this.setState({ stdOutputText: "" });
+    this.setState({ stdOutputText: '' });
     // Run a valid ffmpeg command
-    workerClient.runCommand("-codecs");
+    workerClient.runCommand('-codecs');
   }
 
   render() {
@@ -168,15 +177,15 @@ ffmpeg-js and running command in a worker.
 Official listener for FFMPEGWebworker.
 
 ```js static
-import { FFMPEGWebworkerClient } from "ffmpeg-webworker";
+import { FFMPEGWebworkerClient } from 'ffmpeg-webworker';
 
 const webworkerClient = new FFMPEGWebworkerClient();
 
 // The above is same as
 // import webworkerClient from "ffmpeg-webworker";
 
-webworkerClient.on("ready", () => {
-  console.log("FFMPEG has been loaded, and can receive commands");
+webworkerClient.on('ready', () => {
+  console.log('FFMPEG has been loaded, and can receive commands');
 });
 ```
 

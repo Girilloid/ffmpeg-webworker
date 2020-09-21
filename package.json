@@ -1,6 +1,6 @@
 {
-  "name": "ffmpeg-webworker",
-  "version": "1.3.0",
+  "name": "ffmpeg-webworker-madvise",
+  "version": "1.3.0-madvise",
   "description": "",
   "main": "dist/index.js",
   "files": [

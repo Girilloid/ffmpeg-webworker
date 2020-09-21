@@ -1,11 +1,11 @@
 var workerFile = function workerFile() {
-  var workerPath = "https://cdn.rawgit.com/bgrins/videoconverter.js/master/build/ffmpeg-all-codecs.js";
+  var workerPath = 'https://raw.githack.com/Girilloid/ffmpeg/master/ffmpeg-all-codecs.js';
   importScripts(workerPath);
   var now = Date.now;
 
   function print(text) {
     postMessage({
-      type: "stdout",
+      type: 'stdout',
       data: text
     });
   }
@@ -13,39 +13,39 @@ var workerFile = function workerFile() {
   onmessage = function onmessage(event) {
     var message = event.data;
 
-    if (message.type === "command") {
+    if (message.type === 'command') {
       var Module = {
+        arguments: message.arguments || [],
+        files: message.files || [],
         print: print,
         printErr: print,
-        files: message.files || [],
-        arguments: message.arguments || [],
         TOTAL_MEMORY: message.totalMemory || 33554432
       };
       postMessage({
-        type: "start",
-        data: Module.arguments.join(" ")
+        data: Module.arguments.join(' '),
+        type: 'start'
       });
       postMessage({
-        type: "stdout",
-        data: "Received command: " + Module.arguments.join(" ") + (Module.TOTAL_MEMORY ? ".  Processing with " + Module.TOTAL_MEMORY + " bits." : "")
+        data: "Received command: ".concat(Module.arguments.join(' ')).concat(Module.TOTAL_MEMORY ? ".  Processing with ".concat(Module.TOTAL_MEMORY, " bits.") : ''),
+        type: 'stdout'
       });
       var time = now();
       var result = ffmpeg_run(Module);
       var totalTime = now() - time;
       postMessage({
-        type: "stdout",
-        data: "Finished processing (took " + totalTime + "ms)"
+        data: 'Finished processing (took ' + totalTime + 'ms)',
+        type: 'stdout'
       });
       postMessage({
-        type: "done",
         data: result,
-        time: totalTime
+        time: totalTime,
+        type: 'done'
       });
     }
   };
 
   postMessage({
-    type: "ready"
+    type: 'ready'
   });
 };
 
